@@ -55,13 +55,7 @@ const userSchema = mongoose.Schema(
 			maxLength: [40, "Specialization MUST NOT exceed 40 characters"],
 		},
 		appointments: [
-			{
-				appointmentId: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "Appointment",
-				},
-				status: { type: String, default: "active" },
-			},
+			
 		],
 		otp: { type: String },
 		otpExpiry: { type: Date },

@@ -4,6 +4,7 @@ import Appointment from "../models/appointmentModel.js";
 export const store = async (req, res) => {
 	try {
 		const patientId = req.user._id;
+		const patient = await user.findById(patientId);
 		// const doctorId = req.body.doctorId;
 		const doctorId = req.params.id;
 		const role = req.user.role;
@@ -16,6 +17,7 @@ export const store = async (req, res) => {
 				doctorId,
 				priority,
 				appointmentDate,
+				name: patient.name, 
 			});
 			const savedAppointment = await appoint.save();
 			const doctor = await user.findById(doctorId);
@@ -27,11 +29,12 @@ export const store = async (req, res) => {
 					.json({ success: false, message: "Tour not found" });
 			}
 			await doctor.updateOne({
-				$push: { appointments: savedAppointment._id },
+				$addToSet :{appointments:{$each:[savedAppointment]}}
+				//$push: { appointments: savedAppointment._id },
 			});
 			await user.findByIdAndUpdate(
 				{ _id: userId },
-				{ $push: { appointments: savedAppointment._id } }
+				{  $addToSet :{appointments:{$each:[savedAppointment]}} }
 			);
 
 			res.status(200).json({
@@ -62,7 +65,7 @@ export const deleteAppointUser = async (req, res) => {
 			await Appointment.findByIdAndDelete(req.params.id);
 			await user.findByIdAndUpdate(
 				{ _id: userId },
-				{ $pull: { appointments: appointment._id } },
+				{ $pull: { appointments: appointment } },
 				{ new: true }
 			);
 			res.json({ message: "book deleted", data: [] });

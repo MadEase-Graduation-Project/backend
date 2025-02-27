@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { configDotenv } from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
 import rateLimter from "express-rate-limit";
 import userRouter from "./routes/user.js";
 import otpRouter from "./routes/otp.routes.js";
