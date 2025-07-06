@@ -13,6 +13,8 @@ const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
 
 router.get("/", cache(600), index);
+// router.post("/", upload.single("image"), authenticateJWT, store);
+// router.patch("/:id", upload.single("image"), authenticateJWT, update);
 router.post("/", upload.single("image"), authenticateJWT, store);
 router.patch("/:id", upload.single("image"), authenticateJWT, update);
 router.delete("/:id", authenticateJWT, destroy);
